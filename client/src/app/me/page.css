@@ -1,0 +1,169 @@
+.me-page{
+    min-height: 100vh;
+    width: 100%;
+
+}
+
+.main-content{
+    height: fit-content;
+    min-height: calc(100vh - 80px);
+}
+.tabs button {
+  transition: all 0.2s ease;
+}
+.tabs button:hover {
+  transform: scale(1.05);
+}
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+/* Global styles */
+/* Global styles */
+body, .me-page {
+  background-color: #000;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  padding-bottom: 60px;
+}
+
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 20px;
+  border-bottom: 1px solid #144075;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #01b4e4;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid #144075;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  color: #ccc;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.tabs button.active {
+  color: #01b4e4;
+  font-weight: bold;
+}
+
+.tabs button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #01b4e4;
+}
+
+/* Movie Grid */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  padding: 0 20px;
+}
+
+.movie-card {
+  background-color: #1c2b3a;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(1, 180, 228, 0.3);
+}
+
+.movie-card img {
+  width: 100%;
+  display: block;
+}
+
+.movie-card .info {
+  padding: 10px;
+}
+
+.movie-card .info h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #fff;
+}
+
+.movie-card .info p {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin: 5px 0;
+}
+
+.movie-card .info span {
+  display: block;
+  color: #01b4e4;
+  margin-bottom: 10px;
+}
+
+.movie-card .info button {
+  background-color: #d63447;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s ease;
+}
+
+.movie-card .info button:hover {
+  background-color: #ff4c61;
+}
+
+/* Account info */
+.account-info {
+  padding: 0 20px;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.ratings-tab {
+  padding: 0 20px;
+  color: #bbb;
+}
+
