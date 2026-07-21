@@ -2,9 +2,6 @@
   "name": "reel254",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "client"
-  ],
   "scripts": {
     "dev": "npm --prefix client run dev",
     "build": "npm --prefix client run build",
