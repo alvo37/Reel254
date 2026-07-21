@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Navbar from "@/components/reusables/Navbar/Navbar";
-import Footer from "@/components/reusables/Footer/Footer";
-import { backendService } from "@/services/backendService";
-import { supabase } from "@/lib/supabaseclient";
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
+import Navbar from '@/components/reusables/Navbar/Navbar';
+import Footer from '@/components/reusables/Footer/Footer';
+import { backendService } from '@/services/backendService';
+import { supabase } from '@/lib/supabaseclient';
+import CommentsSection from '@/components/CommentsSection';
 
 type MovieDetails = {
   title: string;
@@ -30,23 +32,18 @@ type Comment = {
 
 export default function MoviePage() {
   const params = useParams();
-  const id = Array.isArray(params.movieid)
-    ? params.movieid[0]
-    : params.movieid || "";
+  const { user, isLoaded } = useUser();
+  const id = Array.isArray(params.movieid) ? params.movieid[0] : params.movieid || '';
 
-  const numericId = parseInt(id || "0"); // Convert ID to number
+  const numericId = parseInt(id || '0'); // Convert ID to number
   if (!numericId) return <p>Invalid movie ID.</p>; // Guard clause for invalid ID
 
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [cast, setCast] = useState<CastMember[]>([]);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState("");
-  const [name, setName] = useState("");
-  const [showComments, setShowComments] = useState(false);
   const [userRating, setUserRating] = useState<number | null>(null);
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
-  const userId = "demo-user";
+  const userId = user?.id;
 
   useEffect(() => {
     if (!numericId) return;
@@ -54,30 +51,26 @@ export default function MoviePage() {
     const fetchDetails = async () => {
       try {
         // Fetch movie details and trailer
-        const details = await backendService.getMovieDetails(
-          numericId.toString()
-        );
+        const details = await backendService.getMovieDetails(numericId.toString());
         const trailerKey = await backendService.getMovieTrailer(numericId);
         const castList = await backendService.getMovieCast(numericId);
-        const userComments = await backendService.getMovieComments(numericId);
 
         setMovie({ ...details, trailerKey });
         setCast(castList);
-        setComments(userComments);
 
         await fetchUserRating();
         await fetchAverageRating();
       } catch (err) {
-        console.error("Error loading movie page:", err);
+        console.error('Error loading movie page:', err);
       }
     };
 
     const fetchUserRating = async () => {
       const { data } = await supabase
-        .from("ratings")
-        .select("rating")
-        .eq("user_id", userId)
-        .eq("movie_id", numericId)
+        .from('ratings')
+        .select('rating')
+        .eq('user_id', userId)
+        .eq('movie_id', numericId)
         .single();
 
       if (data) setUserRating(data.rating);
@@ -85,12 +78,12 @@ export default function MoviePage() {
 
     const fetchAverageRating = async () => {
       const { data, error } = await supabase
-        .from("ratings")
-        .select("rating")
-        .eq("movie_id", numericId);
+        .from('ratings')
+        .select('rating')
+        .eq('movie_id', numericId);
 
       if (error) {
-        console.error("Failed to fetch average rating:", error);
+        console.error('Failed to fetch average rating:', error);
         return;
       }
 
@@ -108,11 +101,11 @@ export default function MoviePage() {
 
   useEffect(() => {
     const loadData = async () => {
-      const allMovies = await backendService.getAllMoviesOrShows("movie", 1);
-      console.log("All movies:", allMovies);
+      const allMovies = await backendService.getAllMoviesOrShows('movie', 1);
+      console.log('All movies:', allMovies);
 
-      const allSeries = await backendService.getAllMoviesOrShows("tv", 1);
-      console.log("All TV shows:", allSeries);
+      const allSeries = await backendService.getAllMoviesOrShows('tv', 1);
+      console.log('All TV shows:', allSeries);
     };
 
     loadData();
@@ -124,64 +117,56 @@ export default function MoviePage() {
     }
   }, [movie]);
 
+  const handleAddToWatchlist = async () => {
+    if (!isLoaded) return;
 
-  const handleComment = async () => {
-    const trimmedName = name.trim();
-    const trimmedComment = newComment.trim();
-
-    if (!trimmedName || !trimmedComment) {
-      alert("Please enter both name and comment.");
+    if (!userId) {
+      alert('Please sign in to add movies to your watchlist.');
       return;
     }
 
-    const newEntry = { name: trimmedName, text: trimmedComment };
-
     try {
-      await backendService.addMovieComment(numericId, newEntry);
-      const updatedComments = await backendService.getMovieComments(numericId);
-      setComments(updatedComments);
-      setNewComment("");
-      setName("");
-    } catch (err) {
-      console.error("Failed to post comment:", err);
-      alert("Failed to post comment. Please try again.");
-    }
-  };
+      const result = await backendService.addToWatchlist(userId, numericId, numericId);
 
-  const handleAddToWatchlist = async () => {
-    try {
-      await backendService.addToWatchlist(userId, numericId);
-      alert("Added to watchlist!");
+      if (result.source === 'supabase') {
+        alert('Added to watchlist.');
+      } else {
+        alert('Could not save to watchlist right now.');
+      }
     } catch (err) {
-      console.error("Failed to add to watchlist:", err);
+      console.error('Failed to add to watchlist:', err);
+      alert('Could not save to watchlist right now.');
     }
   };
 
   const handleRateMovie = async (rating: number) => {
+    if (!userId) {
+      alert('Please sign in to rate movies.');
+      return;
+    }
+
     try {
       const { error } = await supabase
-        .from("ratings")
-        .upsert([{ user_id: userId, movie_id: numericId, rating }]);
+        .from('ratings')
+        .upsert({ user_id: userId, movie_id: numericId, rating });
 
-      if (error) {
-        console.error("Rating failed:", error);
-      } else {
-        setUserRating(rating);
-        await fetchAverageRating();
-      }
+      if (error) throw error;
+      setUserRating(rating);
+      await fetchAverageRating();
     } catch (err) {
-      console.error("Error submitting rating:", err);
+      console.error('Error submitting rating:', err);
+      alert('Could not save your rating right now.');
     }
   };
 
   const fetchAverageRating = async () => {
     const { data, error } = await supabase
-      .from("ratings")
-      .select("rating")
-      .eq("movie_id", numericId);
+      .from('ratings')
+      .select('rating')
+      .eq('movie_id', numericId);
 
     if (error) {
-      console.error("Failed to fetch average rating:", error);
+      console.error('Failed to fetch average rating:', error);
       return;
     }
 
@@ -202,11 +187,15 @@ export default function MoviePage() {
 
       <div className="movie-detail-content p-4 max-w-4xl mx-auto">
         {movie.poster_path ? (
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            className="rounded"
-          />
+          <div className="relative w-full max-w-md mx-auto shadow-2xl rounded-xl overflow-hidden mb-6">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent mix-blend-multiply pointer-events-none"></div>
+            <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10 pointer-events-none"></div>
+          </div>
         ) : (
           <div className="w-full h-[300px] bg-gray-200 flex items-center justify-center rounded">
             <span className="text-gray-600">No poster available</span>
@@ -235,11 +224,8 @@ export default function MoviePage() {
                   <button
                     key={value}
                     onClick={() => handleRateMovie(value)}
-                    className={`text-sm px-3 py-1 rounded ${
-                      userRating === value
-                        ? "bg-yellow-400 text-black"
-                        : "bg-gray-300"
-                    }`}
+                    className={`text-sm px-3 py-1 rounded ${userRating === value ? 'bg-yellow-400 text-black' : 'bg-gray-300'
+                      }`}
                   >
                     {value}
                   </button>
@@ -294,56 +280,7 @@ export default function MoviePage() {
             ))}
           </div>
 
-          <button
-            onClick={() => setShowComments((prev) => !prev)}
-            className="bg-purple-600 text-white px-4 py-2 rounded mt-8 hover:bg-purple-700"
-            type="button"
-          >
-            {showComments ? "Hide Comments" : "View Comments"}
-          </button>
-
-          {showComments && (
-            <div className="mt-4">
-              <h2 className="text-xl font-bold mb-2">Comments</h2>
-
-              <div className="comment-form space-y-2">
-                <input
-                  type="text"
-                  className="border p-2 w-full rounded"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <textarea
-                  className="border p-2 w-full rounded"
-                  placeholder="Write your comment..."
-                  rows={3}
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button
-                  onClick={handleComment}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                  type="button"
-                >
-                  Submit Comment
-                </button>
-              </div>
-
-              {/* Comment list */}
-              <div className="comment-list mt-4 space-y-2">
-                {comments.length === 0 ? (
-                  <p>No comments yet.</p>
-                ) : (
-                  comments.map((c, idx) => (
-                    <div key={idx} className="border-b pb-1">
-                      <strong>{c.name}</strong>: {c.text}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
+          <CommentsSection itemId={numericId.toString()} itemType="movie" />
         </div>
       </div>
       <Footer />

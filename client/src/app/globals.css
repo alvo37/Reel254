@@ -5,6 +5,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-primary: hsl(210, 80%, 55%);
+  --color-primary-foreground: hsl(0, 0%, 100%);
+  --color-secondary: hsl(340, 70%, 55%);
+  --color-secondary-foreground: hsl(0, 0%, 100%);
+  --color-accent: hsl(45, 90%, 55%);
+  --color-accent-foreground: hsl(0, 0%, 100%);
+  --color-surface: #1e242a;
    --background: #14181C;
     --foreground: #ededed;
 }
@@ -20,15 +27,28 @@
   :root {
     --background: #14181C;
     --foreground: #ededed;
+    --color-primary: hsl(210, 80%, 55%);
+    --color-primary-foreground: hsl(0,0%,100%);
+    --color-secondary: hsl(340,70%,55%);
+    --color-secondary-foreground: hsl(0,0%,100%);
+    --color-accent: hsl(45,90%,55%);
+    --color-accent-foreground: hsl(0,0%,100%);
+    --color-surface: #1e242a;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Poppins", "Open Sans",  Arial, Helvetica, sans-serif;
+  font-family: "Poppins", "Open Sans", Arial, Helvetica, sans-serif;
   width: 100%;
-  
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .app-full-bleed{
@@ -66,3 +86,79 @@ body {
   background-color: #F9B6B4;
   color: #D2302C;
 }
+
+
+
+:root {
+  --background: #14181c;
+  --foreground: #ededed;
+  --color-primary: hsl(210, 80%, 55%);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: hsl(340, 70%, 55%);
+  --color-secondary-foreground: #ffffff;
+  --color-accent: hsl(45, 90%, 55%);
+  --color-accent-foreground: #ffffff;
+  --color-surface: #1e242a;
+  --font-sans: 'Poppins', 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #14181c;
+    --foreground: #ededed;
+  }
+}
+
+/* Base Styles */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+* {
+  box-sizing: border-box;
+}
+
+/* Container Utility */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Responsive Typography */
+html {
+  font-size: clamp(14px, 1vw + 0.5rem, 18px);
+}
+
+/* Breakpoints */
+@media (max-width: 480px) {
+  /* Mobile */
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Tablet */
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Laptop */
+}
+@media (min-width: 1025px) {
+  /* Desktop */
+}
+
+/* Dark Mode Support */
+[data-theme='dark'] {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Utility Classes for Padding/Margin */
+.mt-4 { margin-top: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.p-4 { padding: 1rem; }

@@ -6,8 +6,12 @@ import NavLinks from "./components/NavLinks";
 import UserButton from "./components/UserButton";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
+
 export default function Navbar({}) {
   const { isSignedIn } = useUser();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen(!menuOpen);
   return (
     <div className="navbar">
       <div className="navbar-inner">
@@ -23,7 +27,12 @@ export default function Navbar({}) {
             <span>Reel254</span>
           </Link>
         </div>
-        <NavLinks />
+        <button className="hamburger-btn" onClick={toggleMenu} aria-label="Toggle navigation">
+          &#9776;
+        </button>
+          <div className={`nav-middle ${menuOpen ? "open" : ""}`}>
+            <NavLinks onClose={toggleMenu} />
+          </div>
         <div className="nav-end nav-section">
           <InputContainer />
           <UserButton />

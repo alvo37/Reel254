@@ -1,4 +1,13 @@
 .navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+
     width: 100%;
     height: 70px;
     position: relative;
@@ -54,6 +63,8 @@
 }
 
 .nav-middle {
+    display: flex;
+    align-items: center;
     gap: 10px;
     justify-content: center;
 }
@@ -160,7 +171,27 @@
 
 @media (max-width: 810px) {
     .nav-middle{
-        display: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}    
+    .nav-middle.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: #14181c;
+        padding: 10px 20px;
+        gap: 15px;
+        z-index: 1000;
+    }
+    .nav-middle.open a {
+        color: #ffffff;
+        font-size: 16px;
+        padding: 5px 0;
     }
     .nav-input-container{
         width: 100%;

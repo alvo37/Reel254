@@ -1,9 +1,10 @@
 .landing-main {
-  padding: 0 0px;
+  padding: 0;
   width: 100%;
   min-height: 100vh;
   color: white;
   font-family: var(--font-geist-sans);
+  overflow-x: hidden;
 }
 
 /* General section tyling */
@@ -18,7 +19,7 @@ section.limited-width.top-films {
 }
 
 section.limited-width {
-  padding: 0 10px;
+  padding: 0 16px;
 }
 
 section.limited-width .section-top-row{
@@ -50,8 +51,10 @@ section.limited-width .section-top-row p {
 /* Hero Section */
 .hero {
   text-align: center;
-  margin-top: -80px;
-  height: calc(100vh - 100px);
+  margin-top: 0;
+  padding-top: 70px;
+  min-height: 560px;
+  height: min(88vh, 760px);
   max-height: 800px;
   overflow: hidden;
   margin-bottom: 40px;
@@ -71,31 +74,42 @@ section.limited-width .section-top-row p {
 .hero .hero-overlay{
   width: 100%;
   height: 100%;
-  box-shadow: 0px 0px 50px 70px inset var(--background);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 70%,
+    var(--background) 100%
+  );
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 600;
   margin-bottom: 10px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hero p {
-  font-size: 18px;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
   margin-bottom: 20px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 /* Hero Section */
 
 /* CTA Section */
 .auth-buttons {
   width: fit-content;
+  max-width: 100%;
   margin: auto;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .cta {
@@ -134,14 +148,13 @@ section.limited-width .section-top-row p {
 /* Film Grid */
 .film-grid {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  overflow-y: auto;
-  padding: 40px 0px;
-  width: fit-content;
+  overflow-y: hidden;
+  padding: 24px 0 32px;
+  width: 100%;
   max-width: 100%;
   margin: auto;
-
 }
 
 .recent-films .film-grid {
@@ -155,7 +168,7 @@ section.limited-width .section-top-row p {
 }
 
 .film-card{
-  width: 150px;
+  width: min(150px, calc(100vw - 48px));
   height: auto;
   position: relative;
   border-radius: 4px;
@@ -256,6 +269,42 @@ section.limited-width .section-top-row p {
 
 .film-card:hover .film-title {
   opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 520px;
+    height: auto;
+    margin-top: -40px;
+  }
+
+  .hero .hero-overlay {
+    padding: 24px 16px 32px;
+  }
+
+  .auth-buttons {
+    width: 100%;
+  }
+
+  .cta {
+    width: 100%;
+    max-width: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  section.limited-width {
+    padding: 0 12px;
+  }
+
+  .hero {
+    min-height: 460px;
+    margin-bottom: 24px;
+  }
+
+  .film-card {
+    width: 120px;
+  }
 }
 /* Film Grid */
 
