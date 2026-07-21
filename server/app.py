@@ -21,7 +21,7 @@ def get_tmdb_api_key():
                 if value:
                     return value
 
-    return "f529251dd967b9c34355a0e5e4d8c99f"
+    
 
 
 TMDB_API_KEY = get_tmdb_api_key()
