@@ -6,7 +6,7 @@ import { useUser } from '@clerk/nextjs';
 import Navbar from '@/components/reusables/Navbar/Navbar';
 import Footer from '@/components/reusables/Footer/Footer';
 import { backendService } from '@/services/backendService';
-import { supabase } from '@/lib/supabaseclient';
+import { supabase } from '@/lib/temp';
 import CommentsSection from '@/components/CommentsSection';
 
 type MovieDetails = {

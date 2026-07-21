@@ -8,7 +8,7 @@ import { useUser } from '@clerk/nextjs';
 import Navbar from '@/components/reusables/Navbar/Navbar';
 import Footer from '@/components/reusables/Footer/Footer';
 import { backendService } from '@/services/backendService';
-import { supabase } from '@/lib/supabaseclient';
+import { supabase } from '@/lib/temp';
 import CommentsSection from '@/components/CommentsSection';
 
 type TVDetails = {
@@ -248,7 +248,7 @@ export default function TVShowPage() {
           </div>
         </div>
 
-          <CommentsSection itemId={numericId.toString()} itemType="tvshow" />
+        <CommentsSection itemId={numericId.toString()} itemType="tvshow" />
       </div>
       <Footer />
     </div>

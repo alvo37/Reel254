@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabaseclient';
+import { supabase } from '@/lib/temp';
 
 export const interactionService = {
   // --- LIKES ---
@@ -49,7 +49,7 @@ export const interactionService = {
       .eq('item_id', itemId)
       .eq('item_type', itemType)
       .maybeSingle();
-      
+
     if (error) throw new Error(error.message || 'Error');
     return !!data;
   },
@@ -133,14 +133,14 @@ export const interactionService = {
 
     let likes = 0;
     let dislikes = 0;
-    
+
     if (data) {
       data.forEach((r: any) => {
         if (r.reaction_type === 'like') likes++;
         if (r.reaction_type === 'dislike') dislikes++;
       });
     }
-    
+
     return { likes, dislikes };
   }
 };

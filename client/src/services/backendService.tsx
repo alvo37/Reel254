@@ -1,6 +1,6 @@
 import { LandingDataType } from '@/types/types';
 import axios, { AxiosResponse } from 'axios';
-import { supabase } from '@/lib/supabaseclient';
+import { supabase } from '@/lib/temp';
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8888';
 
