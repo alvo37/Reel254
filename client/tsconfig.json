@@ -14,6 +14,7 @@
     "jsx": "preserve",
     "incremental": true,
     "ignoreDeprecations": "5.0",
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",     
     "plugins": [
       {
