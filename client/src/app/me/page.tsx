@@ -7,7 +7,7 @@ import { backendService } from '@/services/backendService';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/temp';
+import { supabase } from '@/lib/supabaseclient';
 
 export default function Me() {
   // Get current authenticated user

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/temp';
+import { supabase } from '@/lib/supabaseclient';
 
 export async function POST(request: Request) {
   const { followerId, followedId } = await request.json();

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/temp';
+import { supabase } from '@/lib/supabaseclient';
 
 // GET: list user's collections
 export async function GET(request: Request) {

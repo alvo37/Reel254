@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/temp';
+import { supabase } from '@/lib/supabaseclient';
 
 export const interactionService = {
   // --- LIKES ---
